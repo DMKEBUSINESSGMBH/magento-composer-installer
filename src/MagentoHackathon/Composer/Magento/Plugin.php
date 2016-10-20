@@ -326,8 +326,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             if ($packageConfig === null) {
                 continue;
             }
-            if (!isset($packageConfig('autoload'))) {
-                $packageConfig('autoload') = array('/');
+            if (!isset($packageConfig['autoload'])) {
+                $packageConfig['autoload'] = array('/');
             }
             foreach ($packageConfig('autoload') as $path) {
                 $autoloadDirectories[] = $libraryPath . '/' . $package->getName() . "/" . $path;
