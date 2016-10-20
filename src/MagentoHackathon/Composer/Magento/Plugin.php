@@ -260,7 +260,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $rule = $event->getOperation()->getReason();
         if ($rule instanceof Rule) {
             if ($event->getOperation()->getJobType() === 'update') {
-                if ($rule->getJob()['packageName'] === 'magento-hackathon/magento-composer-installer') {
+                if ($rule->getJob()('packageName') === 'magento-hackathon/magento-composer-installer') {
                     throw new \Exception(
                         'Dont update the "magento-hackathon/magento-composer-installer" with active plugins.' . PHP_EOL .
                         'Consult the documentation on how to update the Installer' . PHP_EOL .
@@ -283,7 +283,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $foundMagento   = false;
 
         foreach ($this->config->getComposerRepositories() as $repository) {
-            if (!isset($repository["type"]) || $repository["type"] !== "composer") {
+            if (!isset($repository("type")) || $repository("type") !== "composer") {
                 continue;
             }
             if (strpos($repository["url"], "packages.firegento.com") !== false) {
@@ -325,10 +325,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             if ($packageConfig === null) {
                 continue;
             }
-            if (!isset($packageConfig['autoload'])) {
-                $packageConfig['autoload'] = array('/');
+            if (!isset($packageConfig('autoload'))) {
+                $packageConfig('autoload') = array('/');
             }
-            foreach ($packageConfig['autoload'] as $path) {
+            foreach ($packageConfig('autoload') as $path) {
                 $autoloadDirectories[] = $libraryPath . '/' . $package->getName() . "/" . $path;
             }
             $this->writeDebug(sprintf('Magento deployLibraries executed for %s', $package->getName()));
