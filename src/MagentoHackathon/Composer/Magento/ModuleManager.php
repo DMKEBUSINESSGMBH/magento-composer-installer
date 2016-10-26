@@ -222,9 +222,11 @@ class ModuleManager
      *
      * @param PackageInterface $package
      *
+     * @access private only public for php 5.3 compatibility
+     *
      * @return string
      */
-    private function createVersion(PackageInterface $package)
+    public function createVersion(PackageInterface $package)
     {
         $version = $package->getVersion();
 
