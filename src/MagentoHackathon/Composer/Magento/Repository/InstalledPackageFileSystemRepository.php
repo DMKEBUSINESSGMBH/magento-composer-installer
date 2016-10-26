@@ -161,8 +161,10 @@ class InstalledPackageFileSystemRepository implements InstalledPackageRepository
         if (!$this->isLoaded && file_exists($this->filePath)) {
             $data = json_decode(file_get_contents($this->filePath), true);
 
-            foreach ($data as $installedPackageData) {
-                $this->packages[] = $this->dumper->restore($installedPackageData);
+            if (is_array($data)) {
+                foreach ($data as $installedPackageData) {
+                    $this->packages[] = $this->dumper->restore($installedPackageData);
+                }
             }
         }
 
