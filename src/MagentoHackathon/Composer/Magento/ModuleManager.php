@@ -136,6 +136,7 @@ class ModuleManager
      */
     public function getRemoves(array $currentComposerInstalledPackages, array $magentoInstalledPackages)
     {
+        $that = $this;
         //make the package names as the array keys
         if (count($currentComposerInstalledPackages)) {
             $currentComposerInstalledPackages = array_combine(
@@ -150,13 +151,13 @@ class ModuleManager
         }
         return array_filter(
             $magentoInstalledPackages,
-            function (InstalledPackage $package) use ($currentComposerInstalledPackages) {
+            function (InstalledPackage $package) use ($that, $currentComposerInstalledPackages) {
                 if (!isset($currentComposerInstalledPackages[$package->getName()])) {
                     return true;
                 }
 
                 $composerPackage = $currentComposerInstalledPackages[$package->getName()];
-                return $package->getVersion() !== $this->createVersion($composerPackage);
+                return $package->getVersion() !== $that->createVersion($composerPackage);
             }
         );
     }
@@ -168,8 +169,9 @@ class ModuleManager
     public function getInstalls(array $currentComposerInstalledPackages)
     {
         $repo = $this->installedPackageRepository;
-        $packages = array_filter($currentComposerInstalledPackages, function (PackageInterface $package) use ($repo) {
-            return !$repo->has($package->getName(), $this->createVersion($package));
+        $that = $this;
+        $packages = array_filter($currentComposerInstalledPackages, function (PackageInterface $package) use ($that, $repo) {
+            return !$repo->has($package->getName(), $that->createVersion($package));
         });
 
         $config = $this->config;
